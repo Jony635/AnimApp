@@ -3,6 +3,7 @@ package com.jony635.animapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,5 +48,8 @@ public class MainActivity extends AppCompatActivity {
             // - Has to have a "Back" button.
             // - Contains an "Input Text" bar.
             // - Shows below the options matched. //CHOOSE ONE: Button or auto search?
+
+        Intent intent = new Intent(this, SearchAnimeActivity.class);
+        startActivity(intent);
     }
 }
