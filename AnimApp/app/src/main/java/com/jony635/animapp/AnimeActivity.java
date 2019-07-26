@@ -56,7 +56,12 @@ public class AnimeActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull EpisodesVH holder, int position)
         {
-            holder.episodeTV.setText(String.valueOf(episodeList.get(position).id));
+            float value = episodeList.get(position).id;
+
+            if(value - (int)value == 0)
+                holder.episodeTV.setText(String.format("%.0f", value));
+            else
+                holder.episodeTV.setText(String.format("%.1f", value));
         }
 
         @Override
@@ -80,7 +85,7 @@ public class AnimeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view)
                     {
-                        Toast.makeText(AnimeActivity.this, "Link is " + episodeList.get(getLayoutPosition()).id, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(AnimeActivity.this, "Link is " + episodeList.get(getLayoutPosition()).id, Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(episodeList.get(getLayoutPosition()).link));
                         intent.setDataAndType(Uri.parse(episodeList.get(getLayoutPosition()).link), "video/mp4");
