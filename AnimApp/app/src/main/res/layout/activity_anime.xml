@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AnimeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/animesRV"
+        android:id="@+id/episodesRV"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="#9E0FB61A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
