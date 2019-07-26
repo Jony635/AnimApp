@@ -104,21 +104,21 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        Anime anime = new Anime();
-        anime.name = "Default";
-        anime.numEpisodes = 10;
-
-        DocumentReference animeDoc = db.collection("animes").document(anime.name);
-        animeDoc.set(anime);
-
-        for(int i = 1; i <= anime.numEpisodes; ++i)
-        {
-            Episode episode = new Episode();
-            episode.id = i;
-            episode.link = "undefined";
-
-            animeDoc.collection("episodes").document(String.valueOf(i)).set(episode);
-        }
+//        Anime anime = new Anime();
+//        anime.name = "Shingeki no Kyojin Season 3 Part 2";
+//        anime.numEpisodes = 10;
+//
+//        DocumentReference animeDoc = db.collection("animes").document(anime.name);
+//        animeDoc.set(anime);
+//
+//        for(int i = 1; i <= anime.numEpisodes; ++i)
+//        {
+//            Episode episode = new Episode();
+//            episode.id = i;
+//            episode.link = "undefined";
+//
+//            animeDoc.collection("episodes").document(String.valueOf(i)).set(episode);
+//        }
 
         db.collection("animes").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
