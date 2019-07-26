@@ -83,7 +83,7 @@ public class AnimeActivity extends AppCompatActivity {
                         Toast.makeText(AnimeActivity.this, "Link is " + episodeList.get(getLayoutPosition()).id, Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(episodeList.get(getLayoutPosition()).link));
-                        //intent.setDataAndType(Uri.parse(videoURL), "video/*");
+                        intent.setDataAndType(Uri.parse(episodeList.get(getLayoutPosition()).link), "video/mp4");
                         startActivity(intent);
                     }
                 });

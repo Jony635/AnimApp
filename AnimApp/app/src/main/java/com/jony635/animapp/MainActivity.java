@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 //        Anime anime = new Anime();
-//        anime.name = "Shingeki no Kyojin Season 3 Part 2";
-//        anime.numEpisodes = 10;
+//        anime.name = "Shingeki no Kyojin Season 3";
+//        anime.numEpisodes = 12;
 //
 //        DocumentReference animeDoc = db.collection("animes").document(anime.name);
 //        animeDoc.set(anime);
