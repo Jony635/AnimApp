@@ -1,10 +1,5 @@
 package com.jony635.animapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.firestore.DocumentReference;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         {
             TextView textView;
             CheckBox checkBox;
+            Button downloadButton;
 
             public AnimeViewHolder(@NonNull View itemView)
             {
@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
                 checkBox = itemView.findViewById(R.id.seenCheckBox);
                 checkBox.setVisibility(View.GONE);
+
+                downloadButton = itemView.findViewById(R.id.downloadButton);
+                downloadButton.setVisibility(View.GONE);
             }
         }
     }
@@ -110,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 //        Anime anime = new Anime();
-//        anime.name = "Shingeki no Kyojin Season 3";
-//        anime.numEpisodes = 12;
+//        anime.name = "Shigatsu wa Kimi no Uso";
+//        anime.numEpisodes = 23;
 //
 //        DocumentReference animeDoc = db.collection("animes").document(anime.name);
 //        animeDoc.set(anime);

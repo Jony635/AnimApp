@@ -1,31 +1,35 @@
 package com.jony635.animapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,8 +86,9 @@ public class AnimeActivity extends AppCompatActivity {
         {
             TextView episodeTV;
             CheckBox seenCheckBox;
+            Button downloadButton;
 
-            public EpisodesVH(@NonNull View itemView)
+            public EpisodesVH(@NonNull final View itemView)
             {
                 super(itemView);
 
@@ -112,6 +117,17 @@ public class AnimeActivity extends AppCompatActivity {
                     public void onClick(View view)
                     {
                         sharedPreferences.edit().putBoolean(anime.name + "_" + episodeList.get(getLayoutPosition()).id, seenCheckBox.isChecked()).apply();
+                    }
+                });
+
+                downloadButton = itemView.findViewById(R.id.downloadButton);
+
+                downloadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        Toast.makeText(AnimeActivity.this, "Downloading episode...", Toast.LENGTH_SHORT).show();
+                        Download(anime, episodeList.get(getLayoutPosition()));
                     }
                 });
             }
@@ -172,5 +188,33 @@ public class AnimeActivity extends AppCompatActivity {
         episodesRV.setLayoutManager(episodesLayoutManager);
 
         sharedPreferences = getSharedPreferences("ANIME", MODE_PRIVATE);
+    }
+
+    private void Download(Anime anime, Episode episode)
+    {
+        String fileName = anime.name + "_" + (episode.id - (int) episode.id == 0 ?
+                String.format("%.0f", episode.id) : String.format("%.1f", episode.id)) + ".mp4";
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(episode.link))
+                .setTitle("Downloading " + fileName)// Title of the Download Notification
+                //.setDescription("Downloading")// Description of the Download Notification
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)// Visibility of the download Notification
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                .setAllowedOverRoaming(true)// Set if download is allowed on roaming network
+                .setMimeType("video/mp4");
+
+        DownloadManager downloadManager= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadManager.enqueue(request);
+
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                Toast.makeText(AnimeActivity.this, "dude", Toast.LENGTH_SHORT).show();
+            }
+        }, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 }
