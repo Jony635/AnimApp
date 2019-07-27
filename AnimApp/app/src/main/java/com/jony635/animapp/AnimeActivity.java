@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class AnimeActivity extends AppCompatActivity {
 
     private List<Episode> episodeList = new ArrayList<>();
 
+    private SharedPreferences sharedPreferences;
+
     public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.EpisodesVH>
     {
         @NonNull
@@ -62,6 +66,10 @@ public class AnimeActivity extends AppCompatActivity {
                 holder.episodeTV.setText(String.format("%.0f", value));
             else
                 holder.episodeTV.setText(String.format("%.1f", value));
+
+
+            boolean seen = sharedPreferences.getBoolean(anime.name + "_" + value, false);
+            holder.seenCheckBox.setChecked(seen);
         }
 
         @Override
@@ -73,6 +81,7 @@ public class AnimeActivity extends AppCompatActivity {
         class EpisodesVH extends RecyclerView.ViewHolder
         {
             TextView episodeTV;
+            CheckBox seenCheckBox;
 
             public EpisodesVH(@NonNull View itemView)
             {
@@ -90,6 +99,19 @@ public class AnimeActivity extends AppCompatActivity {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(episodeList.get(getLayoutPosition()).link));
                         intent.setDataAndType(Uri.parse(episodeList.get(getLayoutPosition()).link), "video/mp4");
                         startActivity(intent);
+
+                        sharedPreferences.edit().putBoolean(anime.name + "_" + episodeList.get(getLayoutPosition()).id, true).apply();
+                        seenCheckBox.setChecked(true);
+                    }
+                });
+
+                seenCheckBox = itemView.findViewById(R.id.seenCheckBox);
+                seenCheckBox.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        sharedPreferences.edit().putBoolean(anime.name + "_" + episodeList.get(getLayoutPosition()).id, seenCheckBox.isChecked()).apply();
                     }
                 });
             }
@@ -148,5 +170,7 @@ public class AnimeActivity extends AppCompatActivity {
 
         episodesLayoutManager = new LinearLayoutManager(this);
         episodesRV.setLayoutManager(episodesLayoutManager);
+
+        sharedPreferences = getSharedPreferences("ANIME", MODE_PRIVATE);
     }
 }

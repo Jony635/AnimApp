@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         public class AnimeViewHolder extends RecyclerView.ViewHolder
         {
             TextView textView;
+            CheckBox checkBox;
 
             public AnimeViewHolder(@NonNull View itemView)
             {
@@ -73,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                         OnAnimeClicked(animeList.get(position));
                     }
                 });
+
+                checkBox = itemView.findViewById(R.id.seenCheckBox);
+                checkBox.setVisibility(View.GONE);
             }
         }
     }
