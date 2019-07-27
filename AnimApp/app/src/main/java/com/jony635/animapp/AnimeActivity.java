@@ -198,8 +198,8 @@ public class AnimeActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(episode.link))
-                .setTitle("Downloading " + fileName)// Title of the Download Notification
-                //.setDescription("Downloading")// Description of the Download Notification
+                .setTitle(fileName)// Title of the Download Notification
+                .setDescription("Downloading episode")// Description of the Download Notification
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)// Visibility of the download Notification
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
                 .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
@@ -208,13 +208,5 @@ public class AnimeActivity extends AppCompatActivity {
 
         DownloadManager downloadManager= (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
         downloadManager.enqueue(request);
-
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                Toast.makeText(AnimeActivity.this, "dude", Toast.LENGTH_SHORT).show();
-            }
-        }, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 }
