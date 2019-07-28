@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Anime> animeList;
 
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 .setGitHubUserAndRepo("Jony635", "AnimApp").setCancelable(false)
                 .setButtonDismiss(null).setButtonDoNotShowAgain(null);
         appUpdater.start();
-
 
         animeList = new ArrayList<Anime>();
 
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 animeList.clear();
+
                 for(DocumentSnapshot doc : queryDocumentSnapshots)
                 {
                     animeList.add(doc.toObject(Anime.class));
